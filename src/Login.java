@@ -1,0 +1,81 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+public class Login {
+   public void login_Frame(){
+    JFrame loginFrame = new JFrame("LOGIN");
+
+    loginFrame.setVisible(true);
+    loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    loginFrame.setLocationRelativeTo(null);
+    loginFrame.setSize(600,500);
+    loginFrame.setLayout(new BorderLayout());
+
+    //Objects of other classes
+    MainScreen mainScrnObj = new MainScreen();
+    
+    JPanel mainPanel = new JPanel(new GridLayout(15,0));
+    mainPanel.setBackground(Color.lightGray);
+
+    //Main panel components
+    JTextField fNameTxtField = new JTextField();
+    JTextField lNameTxtField = new JTextField();
+    JTextField accNoTxtField = new JTextField();
+    JTextField pinTxtField = new JTextField();
+
+        // login button
+    JButton loginButton = new JButton("LOGIN");
+            loginButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e){
+                mainScrnObj.main_Screen();
+                loginFrame.dispose();
+                
+
+               } 
+            });
+
+        // clear fields button
+    JButton clearFieldsBtn = new JButton("CLEAR FIELDS");
+            clearFieldsBtn.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e){
+
+               } 
+            });
+
+        //exit button
+    JButton exitButton = new JButton("EXIT");
+    exitButton.setBackground(Color.red);
+    exitButton.setForeground(Color.black);
+            exitButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e){
+                loginFrame.dispose();
+
+               } 
+            });
+
+    //Adding components to main Panel
+    mainPanel.add(new JLabel("First Name:"));
+    mainPanel.add(fNameTxtField);
+    mainPanel.add(new JLabel("Last Name:"));
+    mainPanel.add(lNameTxtField);
+    mainPanel.add(new JLabel("Account Number:"));
+    mainPanel.add(accNoTxtField);
+    mainPanel.add(new JLabel("PIN: "));
+    mainPanel.add(pinTxtField);
+
+    mainPanel.add(new JLabel()); //for spacing
+
+    mainPanel.add(loginButton);
+    mainPanel.add(clearFieldsBtn);
+    mainPanel.add(new JLabel()); // for spacing
+    mainPanel.add(exitButton);
+   
+    //Adding components to Frame
+    loginFrame.add(mainPanel, BorderLayout.CENTER);
+
+   }
+
+    
+}
