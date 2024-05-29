@@ -25,6 +25,12 @@ public class Login {
     JTextField accNoTxtField = new JTextField();
     JTextField pinTxtField = new JTextField();
 
+    //Variables
+    String userFirstName = fNameTxtField.getText();
+    String userLastName = lNameTxtField.getText();
+    String userAccNumber = accNoTxtField.getText();
+    String userPinNumber = pinTxtField.getText();
+
         // login button
     JButton loginButton = new JButton("LOGIN");
             loginButton.addActionListener(new ActionListener() {
@@ -40,6 +46,10 @@ public class Login {
     JButton clearFieldsBtn = new JButton("CLEAR FIELDS");
             clearFieldsBtn.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e){
+                  fNameTxtField.setText("");
+                  lNameTxtField.setText("");
+                  accNoTxtField.setText("");
+                  pinTxtField.setText("");   
 
                } 
             });
