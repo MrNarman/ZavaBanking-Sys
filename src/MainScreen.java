@@ -1,9 +1,15 @@
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import javax.swing.*;
 
 public class MainScreen {
+    static JLabel fullName;
+    static JLabel accNumberLabel;
+    static JLabel accBalance;
+    static HashMap<String, Integer>accountBalanceHMap = new HashMap<String, Integer>();
+
     public MainScreen(){
         JFrame mainScreen = new JFrame("Main Screen");
 
@@ -54,10 +60,10 @@ public class MainScreen {
         leftPanel.setBounds(0,0,180, 500);
         leftPanel.setLayout(null);
 
-        JLabel fullName = new JLabel("XXXXXX XXXXXX");
+        fullName = new JLabel("XXXXXX XXXXXX");
         fullName.setBounds(7, 25, 175, 30);
 
-        JLabel accNumberLabel = new JLabel("************"); 
+        accNumberLabel = new JLabel("************");
         accNumberLabel.setBounds(7,50, 100, 30);  
         
         JButton exitButton = new JButton("EXIT");
@@ -74,13 +80,29 @@ public class MainScreen {
         leftPanel.add(accNumberLabel);
         leftPanel.add(exitButton);
 
-        JLabel accBalance = new JLabel("Balance: Ksh 0.0");
-        accBalance.setBounds(200, 20, 200, 40);
+        accBalance = new JLabel("000000000 ");
+        accBalance.setBounds(300, 20, 200, 40);
+        JLabel currencyLabel = new JLabel("Balance: Ksh ");
+        currencyLabel.setBounds(200, 20, 200, 40);
         
         //Add components to Frame
         mainScreen.add(buttonPanel);
+        mainScreen.add(currencyLabel);
         mainScreen.add(accBalance);
         mainScreen.add(leftPanel);
     }
-    
+
+    //Method to update the label text
+    public static void updateLabelText(String fullNameText, String accNumberTxt){
+        fullName.setText(fullNameText);
+        accNumberLabel.setText(accNumberTxt);
+    }
+
+    public static void updateBalanceLabel(String accNumberLogin){
+        accountBalanceHMap.put("12345678", 200230);
+
+        accBalance.setText(String.valueOf(accountBalanceHMap.get(accNumberLogin)));
+
+    }
+
 }

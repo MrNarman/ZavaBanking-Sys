@@ -13,9 +13,6 @@ public class Login {
     loginFrame.setSize(600,500);
     loginFrame.setLayout(new BorderLayout());
 
-    //Objects of other classes
-    //MainScreen mainScrnObj = new MainScreen();
-
     JPanel mainPanel = new JPanel(new GridLayout(15,0));
     mainPanel.setBackground(Color.lightGray);
 
@@ -25,17 +22,18 @@ public class Login {
     JTextField accNoTxtField = new JTextField();
     JTextField pinTxtField = new JTextField();
 
-       //Variables
-       String userFirstName = fNameTxtField.getText();
-       String userLastName = lNameTxtField.getText();
-       String userAccNumber = accNoTxtField.getText();
-       String userPinNumber = pinTxtField.getText();
-
        // login button
     JButton loginButton = new JButton("LOGIN");
             loginButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e){
+                   String userFirstName = fNameTxtField.getText();
+                   String userLastName = lNameTxtField.getText();
+                   String userAccNumber = accNoTxtField.getText();
+                   String userPinNumber = pinTxtField.getText();
+
                     new MainScreen();
+                    MainScreen.updateLabelText((userFirstName+" "+ userLastName).toUpperCase(), userAccNumber);
+                    MainScreen.updateBalanceLabel(userAccNumber);
                     loginFrame.dispose();
 
                } 
@@ -85,6 +83,5 @@ public class Login {
     loginFrame.add(mainPanel, BorderLayout.CENTER);
 
    }
-
 
 }
