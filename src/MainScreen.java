@@ -101,7 +101,8 @@ public class MainScreen {
     public static void updateBalanceLabel(String accNumberLogin){
         accountBalanceHMap.put("12345678", 200230);
 
-        accBalance.setText(String.valueOf(accountBalanceHMap.get(accNumberLogin)));
+        String amountInAccount = String.valueOf(accountBalanceHMap.get(accNumberLogin));
+        accBalance.setText(amountInAccount);
 
     }
 
