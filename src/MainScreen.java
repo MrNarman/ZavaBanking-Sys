@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class MainScreen {
-    public void main_Screen(){
+    public MainScreen(){
         JFrame mainScreen = new JFrame("Main Screen");
 
         mainScreen.setVisible(true);
@@ -55,7 +55,7 @@ public class MainScreen {
         leftPanel.setLayout(null);
 
         JLabel fullName = new JLabel("XXXXXX XXXXXX");
-        fullName.setBounds(7, 25, 175, 30); 
+        fullName.setBounds(7, 25, 175, 30);
 
         JLabel accNumberLabel = new JLabel("************"); 
         accNumberLabel.setBounds(7,50, 100, 30);  
@@ -74,12 +74,12 @@ public class MainScreen {
         leftPanel.add(accNumberLabel);
         leftPanel.add(exitButton);
 
-        JLabel accBalnce = new JLabel("Balance: Ksh 0.0");
-        accBalnce.setBounds(200, 20, 200, 40);
+        JLabel accBalance = new JLabel("Balance: Ksh 0.0");
+        accBalance.setBounds(200, 20, 200, 40);
         
         //Add components to Frame
         mainScreen.add(buttonPanel);
-        mainScreen.add(accBalnce);
+        mainScreen.add(accBalance);
         mainScreen.add(leftPanel);
     }
     

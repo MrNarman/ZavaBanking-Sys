@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 public class Login {
-   public void login_Frame(){
+   public Login(){
     JFrame loginFrame = new JFrame("LOGIN");
 
     loginFrame.setVisible(true);
@@ -14,8 +14,8 @@ public class Login {
     loginFrame.setLayout(new BorderLayout());
 
     //Objects of other classes
-    MainScreen mainScrnObj = new MainScreen();
-    
+    //MainScreen mainScrnObj = new MainScreen();
+
     JPanel mainPanel = new JPanel(new GridLayout(15,0));
     mainPanel.setBackground(Color.lightGray);
 
@@ -25,19 +25,18 @@ public class Login {
     JTextField accNoTxtField = new JTextField();
     JTextField pinTxtField = new JTextField();
 
-    //Variables
-    String userFirstName = fNameTxtField.getText();
-    String userLastName = lNameTxtField.getText();
-    String userAccNumber = accNoTxtField.getText();
-    String userPinNumber = pinTxtField.getText();
+       //Variables
+       String userFirstName = fNameTxtField.getText();
+       String userLastName = lNameTxtField.getText();
+       String userAccNumber = accNoTxtField.getText();
+       String userPinNumber = pinTxtField.getText();
 
-        // login button
+       // login button
     JButton loginButton = new JButton("LOGIN");
             loginButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e){
-                mainScrnObj.main_Screen();
-                loginFrame.dispose();
-                
+                    new MainScreen();
+                    loginFrame.dispose();
 
                } 
             });
@@ -87,5 +86,5 @@ public class Login {
 
    }
 
-    
+
 }
