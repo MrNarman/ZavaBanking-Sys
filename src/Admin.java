@@ -11,6 +11,7 @@ public class Admin extends JFrame {
     JTextField lastNameADMN;
     JTextField firstDeposit;
     JButton clearFields;
+    JButton clearAccDatabase;
 
     public Admin(){
         JFrame adminFrame = new JFrame("Admin");
@@ -21,6 +22,22 @@ public class Admin extends JFrame {
         adminFrame.setLocationRelativeTo(null);
         adminFrame.setResizable(false);
         adminFrame.setLayout(new GridLayout(15, 0));
+
+        clearAccDatabase = new JButton("DELETE ALL ACCOUNTS");
+        clearAccDatabase.setBackground(Color.RED);
+        clearAccDatabase.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int yesOrNo = JOptionPane.showConfirmDialog(adminFrame, "You are about to delete all accounts. Do you wish to continue?");
+                
+                    if (yesOrNo == JOptionPane.YES_OPTION){
+                        MainScreen.accountBalanceHMap.clear();
+                        JOptionPane.showMessageDialog(null, "All Accounts Successfully Deleted From Database");
+
+                    } else if (yesOrNo == JOptionPane.NO_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Accounts have been Retained in the Database");
+                    }
+            }
+        });
 
         JLabel fNameLabelADMN = new JLabel("First Name: ");
         firstNameADMN = new JTextField();
@@ -58,7 +75,7 @@ public class Admin extends JFrame {
         });
 
         backButton = new JButton("BACK");
-        backButton.setBackground(Color.RED);
+        backButton.setBackground(Color.GREEN);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Login();
@@ -67,6 +84,7 @@ public class Admin extends JFrame {
             }
         });
 
+        adminFrame.add(clearAccDatabase);
         adminFrame.add(fNameLabelADMN);
         adminFrame.add(firstNameADMN);
         adminFrame.add(lNameADMN);
@@ -85,5 +103,6 @@ public class Admin extends JFrame {
 
     public void updateHashMapDetails(String bankAccNumber, int firstDepositAmount){
         MainScreen.accountBalanceHMap.put(bankAccNumber, firstDepositAmount);
+
     }
 }
