@@ -59,8 +59,18 @@ public class Login {
                public void actionPerformed(ActionEvent e){
                 loginFrame.dispose();
 
-               } 
+               }
             });
+
+            //Admin Button
+       JButton adminButton = new JButton("ADMIN");
+       adminButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               new Admin();
+               loginFrame.dispose();
+
+           }
+       });
 
     //Adding components to main Panel
     mainPanel.add(new JLabel("First Name:"));
@@ -78,6 +88,8 @@ public class Login {
     mainPanel.add(clearFieldsBtn);
     mainPanel.add(new JLabel()); // for spacing
     mainPanel.add(exitButton);
+    mainPanel.add(new JLabel()); //for spacing
+    mainPanel.add(adminButton);
    
     //Adding components to Frame
     loginFrame.add(mainPanel, BorderLayout.CENTER);
