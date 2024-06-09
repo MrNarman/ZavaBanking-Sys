@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.Scanner;
 
 public class Admin extends JFrame {
     JButton backButton;
@@ -12,6 +14,7 @@ public class Admin extends JFrame {
     JTextField firstDeposit;
     JButton clearFields;
     JButton clearAccDatabase;
+    JButton seeDatabase;
 
     public Admin(){
         JFrame adminFrame = new JFrame("Admin");
@@ -23,12 +26,21 @@ public class Admin extends JFrame {
         adminFrame.setResizable(false);
         adminFrame.setLayout(new GridLayout(15, 0));
 
+        seeDatabase = new JButton("VIEW DATABASE");
+        seeDatabase.setBackground(Color.BLUE);
+        seeDatabase.setForeground(Color.WHITE);
+        seeDatabase.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seeAccDatabase();
+            }
+        });
+
         clearAccDatabase = new JButton("DELETE ALL ACCOUNTS");
         clearAccDatabase.setBackground(Color.RED);
         clearAccDatabase.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int yesOrNo = JOptionPane.showConfirmDialog(adminFrame, "You are about to delete all accounts. Do you wish to continue?");
-                
+
                     if (yesOrNo == JOptionPane.YES_OPTION){
                         MainScreen.accountBalanceHMap.clear();
                         JOptionPane.showMessageDialog(null, "All Accounts Successfully Deleted From Database");
@@ -55,10 +67,15 @@ public class Admin extends JFrame {
         addAccountButton.setBackground(Color.cyan);
         addAccountButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String dbFName = firstNameADMN.getText();
+                String dbLName = lastNameADMN.getText();
+
                 String adminGetAccNo = accountNumberADMN.getText();
                 int adminGetFirstAmount = Integer.parseInt(firstDeposit.getText());
-                updateHashMapDetails(adminGetAccNo, adminGetFirstAmount);
 
+                addDetailsToFile(dbFName, dbLName, adminGetAccNo, adminGetFirstAmount);
+
+                updateHashMapDetails(adminGetAccNo, adminGetFirstAmount);
                 JOptionPane.showMessageDialog(null, "Account "+ adminGetAccNo +" added with deposit Ksh "+ adminGetFirstAmount);
 
             }
@@ -84,6 +101,7 @@ public class Admin extends JFrame {
             }
         });
 
+        adminFrame.add(seeDatabase);
         adminFrame.add(clearAccDatabase);
         adminFrame.add(fNameLabelADMN);
         adminFrame.add(firstNameADMN);
@@ -104,5 +122,38 @@ public class Admin extends JFrame {
     public void updateHashMapDetails(String bankAccNumber, int firstDepositAmount){
         MainScreen.accountBalanceHMap.put(bankAccNumber, firstDepositAmount);
 
+    }
+
+    public void addDetailsToFile(String dbFirstName, String dbLastName, String dbAccNumber, int dbFirstDeposit){
+       try{
+           BufferedWriter databaseWriter = new BufferedWriter(new FileWriter("Accounts.txt", true));
+           databaseWriter.newLine();
+           databaseWriter.write(dbFirstName+" "+ dbLastName+" "+ dbAccNumber+ " "+ dbFirstDeposit);
+
+           databaseWriter.close();
+       }catch (IOException e){
+           JOptionPane.showMessageDialog(null, "An Error Occurred!", "Warning", JOptionPane.WARNING_MESSAGE);
+       }
+    }
+
+    public void seeAccDatabase(){
+
+        String fileName = "Accounts.txt";
+        StringBuilder fileContent = new StringBuilder();
+
+        try(BufferedReader myFileReadObj = new BufferedReader (new FileReader(fileName))){
+            String data = myFileReadObj.readLine();
+            while(data != null){
+                fileContent.append(data);
+                fileContent.append("\n");
+                data = myFileReadObj.readLine();
+
+            }
+            JOptionPane.showMessageDialog(null, fileContent.toString(), "Accounts", JOptionPane.INFORMATION_MESSAGE);
+            myFileReadObj.close();
+
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "An error occurred", "Warning", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
