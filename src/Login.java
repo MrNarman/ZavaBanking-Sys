@@ -43,6 +43,7 @@ public class Login {
                       boolean accountFound = false;
                       while((fileLine = loginReader.readLine()) != null){
                           String[] parts = fileLine.split(" ");
+
                           if (parts.length >=4 ){
                               String loginFName = parts[0];
                               String loginLName = parts[1];
@@ -63,9 +64,7 @@ public class Login {
                       }
                       if (!accountFound){
                           JOptionPane.showMessageDialog(loginFrame, "Account Does Not Exist.\nCheck that you have entered your Acc Number and your PIN correctly ", "ERROR", JOptionPane.ERROR_MESSAGE);
-
                       }
-
                    }catch (IOException ex){
                        JOptionPane.showMessageDialog(loginFrame, "User Does Not Exist", "ERROR", JOptionPane.ERROR_MESSAGE);
 
@@ -93,7 +92,6 @@ public class Login {
             exitButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e){
                 loginFrame.dispose();
-
                }
             });
 
@@ -101,16 +99,23 @@ public class Login {
        JButton adminButton = new JButton("ADMIN");
        adminButton.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
-               new Admin();
-               loginFrame.dispose();
+               final String adminPassword = "admin@ZavaBank";
 
+               String adminInput = JOptionPane.showInputDialog(null, "Enter Admin password: " );
+
+               if(adminPassword.equals(adminInput)){
+                   new Admin();
+                   loginFrame.dispose();
+               } else {
+                   JOptionPane.showMessageDialog(null, "Wrong Password you are not an Admin", "ERROR", JOptionPane.ERROR_MESSAGE);
+               }
            }
        });
 
     //Adding components to main Panel
        mainPanel.add(new JLabel()); //for spacing
        mainPanel.add(new JLabel()); //for spacing
-       mainPanel.add(new JLabel()); //for spacing
+       //mainPanel.add(new JLabel()); //for spacing
 
     mainPanel.add(new JLabel("Account Number:"));
     mainPanel.add(accNoTxtField);

@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
 import javax.swing.*;
 
 public class MainScreen {
@@ -27,6 +26,8 @@ public class MainScreen {
         JButton withdrawButton = new JButton("WITHDRAW");
                 withdrawButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
+                        new Withdraw();
+                        mainScreen.dispose();
 
                     }
                 });
@@ -39,6 +40,8 @@ public class MainScreen {
         JButton donateButton = new JButton("DONATE");
                 donateButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
+                        new Donate();
+                        mainScreen.dispose();
 
                     }
                 });
