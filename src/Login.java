@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.*;
 public class Login {
@@ -31,10 +34,42 @@ public class Login {
                    String userAccNumber = accNoTxtField.getText();
                    String userPinNumber = pinTxtField.getText();
 
-                    new MainScreen();
-                    MainScreen.updateLabelText((userFirstName+" "+ userLastName).toUpperCase(), userAccNumber);
-                    MainScreen.updateBalanceLabel(userAccNumber);
-                    loginFrame.dispose();
+                   /* updateLabelText updates the full name and account number on the mainScreen
+                   * update balance label updates balance from corresponding account number
+                   * balance is stored in a hashMap as an integer with the account number as its key*/
+
+                   try(BufferedReader loginReader = new BufferedReader(new FileReader("Accounts.txt"))){
+                      String fileLine;
+                      boolean accountFound = false;
+                      while((fileLine = loginReader.readLine()) != null){
+                          String[] parts = fileLine.split(" ");
+                          if (parts.length >=4 ){
+                              String loginFName = parts[0];
+                              String loginLName = parts[1];
+                              String loginAccNumber = parts[2];
+                              String loginAccBal = parts[3];
+                              String loginPin = parts[4];
+
+                              if (loginAccNumber.equals(userAccNumber) && loginPin.equals(userPinNumber)){
+                                  new MainScreen();
+                                  MainScreen.updateLabelText((loginFName+ " "+ loginLName).toUpperCase(), loginAccNumber);
+                                  MainScreen.loginUpdateBalanceLabel(loginAccBal);
+                                  loginFrame.dispose();
+
+                                  accountFound = true;
+                                  break;
+                              }
+                          }
+                      }
+                      if (!accountFound){
+                          JOptionPane.showMessageDialog(loginFrame, "Account Does Not Exist.\nCheck that you have entered your Acc Number and your PIN correctly ", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                      }
+
+                   }catch (IOException ex){
+                       JOptionPane.showMessageDialog(loginFrame, "User Does Not Exist", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                   }
 
                } 
             });
@@ -73,10 +108,10 @@ public class Login {
        });
 
     //Adding components to main Panel
-    mainPanel.add(new JLabel("First Name:"));
-    mainPanel.add(fNameTxtField);
-    mainPanel.add(new JLabel("Last Name:"));
-    mainPanel.add(lNameTxtField);
+       mainPanel.add(new JLabel()); //for spacing
+       mainPanel.add(new JLabel()); //for spacing
+       mainPanel.add(new JLabel()); //for spacing
+
     mainPanel.add(new JLabel("Account Number:"));
     mainPanel.add(accNoTxtField);
     mainPanel.add(new JLabel("PIN: "));

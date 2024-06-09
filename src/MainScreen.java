@@ -8,7 +8,6 @@ public class MainScreen {
     static JLabel fullName;
     static JLabel accNumberLabel;
     static JLabel accBalance;
-    static HashMap<String, Integer>accountBalanceHMap = new HashMap<String, Integer>();
 
     public MainScreen(){
         JFrame mainScreen = new JFrame("Main Screen");
@@ -98,10 +97,8 @@ public class MainScreen {
         accNumberLabel.setText(accNumberTxt);
     }
 
-    public static void updateBalanceLabel(String accNumberLogin){
-        String amountInAccount = String.valueOf(accountBalanceHMap.get(accNumberLogin));
-        accBalance.setText(amountInAccount);
-
+    public static void loginUpdateBalanceLabel(String accBalOfAccNoEntered){
+        accBalance.setText(accBalOfAccNoEntered);
     }
 
 }

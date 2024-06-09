@@ -42,7 +42,10 @@ public class Admin extends JFrame {
                 int yesOrNo = JOptionPane.showConfirmDialog(adminFrame, "You are about to delete all accounts. Do you wish to continue?");
 
                     if (yesOrNo == JOptionPane.YES_OPTION){
-                        MainScreen.accountBalanceHMap.clear();
+
+                        File databaseFile = new File("Accounts.txt");
+                        databaseFile.delete();
+
                         JOptionPane.showMessageDialog(null, "All Accounts Successfully Deleted From Database");
 
                     } else if (yesOrNo == JOptionPane.NO_OPTION) {
@@ -67,17 +70,21 @@ public class Admin extends JFrame {
         addAccountButton.setBackground(Color.cyan);
         addAccountButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String dbFName = firstNameADMN.getText();
-                String dbLName = lastNameADMN.getText();
+                String accPinWindow = JOptionPane.showInputDialog(null, "Set a pin for the account: ", "ACCOUNT PIN", JOptionPane.INFORMATION_MESSAGE);
 
-                String adminGetAccNo = accountNumberADMN.getText();
-                int adminGetFirstAmount = Integer.parseInt(firstDeposit.getText());
+                if (accPinWindow != null){
+                     String dbFName = firstNameADMN.getText();
+                     String dbLName = lastNameADMN.getText();
 
-                addDetailsToFile(dbFName, dbLName, adminGetAccNo, adminGetFirstAmount);
+                     String adminGetAccNo = accountNumberADMN.getText();
+                     int adminGetFirstAmount = Integer.parseInt(firstDeposit.getText());
 
-                updateHashMapDetails(adminGetAccNo, adminGetFirstAmount);
-                JOptionPane.showMessageDialog(null, "Account "+ adminGetAccNo +" added with deposit Ksh "+ adminGetFirstAmount);
+                     addDetailsToFile(dbFName, dbLName, adminGetAccNo, adminGetFirstAmount, accPinWindow);
+                     JOptionPane.showMessageDialog(null, "Account "+ adminGetAccNo +" added with deposit Ksh "+ adminGetFirstAmount);
 
+                } else{
+                    JOptionPane.showMessageDialog(null, "Account PIN not set. User might not access account.\nGo back and set PIN", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -87,6 +94,7 @@ public class Admin extends JFrame {
                 firstNameADMN.setText("");
                 lastNameADMN.setText("");
                 accountNumberADMN.setText("");
+                firstDeposit.setText("");
 
             }
         });
@@ -119,16 +127,11 @@ public class Admin extends JFrame {
 
     }
 
-    public void updateHashMapDetails(String bankAccNumber, int firstDepositAmount){
-        MainScreen.accountBalanceHMap.put(bankAccNumber, firstDepositAmount);
-
-    }
-
-    public void addDetailsToFile(String dbFirstName, String dbLastName, String dbAccNumber, int dbFirstDeposit){
+    public void addDetailsToFile(String dbFirstName, String dbLastName, String dbAccNumber, int dbFirstDeposit, String pinNumber){
        try{
            BufferedWriter databaseWriter = new BufferedWriter(new FileWriter("Accounts.txt", true));
            databaseWriter.newLine();
-           databaseWriter.write(dbFirstName+" "+ dbLastName+" "+ dbAccNumber+ " "+ dbFirstDeposit);
+           databaseWriter.write(dbFirstName+" "+ dbLastName+" "+ dbAccNumber+ " "+ dbFirstDeposit+" "+pinNumber);
 
            databaseWriter.close();
        }catch (IOException e){
