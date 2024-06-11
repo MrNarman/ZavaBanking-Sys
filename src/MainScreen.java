@@ -27,6 +27,7 @@ public class MainScreen {
                 withdrawButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
                         new Withdraw();
+                        Withdraw.withdrawUpdateBalLabel(MainScreen.accBalance.getText());
                         mainScreen.dispose();
 
                     }
@@ -41,6 +42,7 @@ public class MainScreen {
                 donateButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
                         new Donate();
+                        Donate.donateUpdateBalLabel(MainScreen.accBalance.getText());
                         mainScreen.dispose();
 
                     }

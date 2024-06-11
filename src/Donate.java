@@ -1,3 +1,5 @@
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +36,30 @@ public class Donate {
         donateButton.setBounds(50, 270, 150, 30);
         donateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String getDonateAmount = donateAmountTxtFld.getText();
+                int donateBal_calculation = Integer.parseInt(String.valueOf(donateBal.getText()));
+
+                if (getDonateAmount.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "ENTER AMOUNT TO DONATE.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                } else if(Integer.parseInt(getDonateAmount) > Integer.parseInt(String.valueOf(donateBal.getText()))){
+                    JOptionPane.showMessageDialog(null, "You have insufficient funds to donate Ksh "+getDonateAmount);
+                }else{
+                    int amountUserToDonate = Integer.parseInt(getDonateAmount);
+                    int remainingBalance = (donateBal_calculation) - (amountUserToDonate);
+
+                    int confirmDonation = JOptionPane.showConfirmDialog(null, "You are about to donate Ksh "+ getDonateAmount +"\n Do you wish to continue?","CONFIRM WITHDRAWAL", JOptionPane.YES_NO_OPTION);
+                        if (confirmDonation == JOptionPane.YES_OPTION){
+                                    /*
+                                     INSERT CODE FOR DONATION FUNCTION HERE
+                                     Code to insert: Updating database with the remaining balance after donation
+                                     Code to remove: JOptionPane.showMessageDialog
+                                    */
+                            JOptionPane.showMessageDialog(null, "Balance: "+donateBal_calculation+" Withdraw: "+getDonateAmount +" Balance: "+remainingBalance);
+                        } else if(confirmDonation == JOptionPane.NO_OPTION){
+                            JOptionPane.showMessageDialog(null, "You have canceled withdrawal of Ksh "+getDonateAmount);
+                        }
+
+                }
 
             }
         });
@@ -44,6 +70,8 @@ public class Donate {
         backButton.setForeground(Color.white);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                new MainScreen();
+                donateFrame.dispose();
 
             }
         });
