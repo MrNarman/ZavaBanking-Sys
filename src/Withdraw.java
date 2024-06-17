@@ -9,14 +9,14 @@ public class Withdraw {
     JButton backButton;
     static JLabel withdrawBal;
     static JLabel withdrawAccNumber;
-    JTextField withdrawAmountTxtFld;
+    static JTextField withdrawAmountTxtFld;
     JButton withdrawButton;
 
     public Withdraw(){
         JFrame withdrawFrame = new JFrame("WITHDRAW FUNDS");
 
         withdrawFrame.setVisible(true);
-        withdrawFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        withdrawFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         withdrawFrame.setLocationRelativeTo(null);
         withdrawFrame.setSize(400,350);
         withdrawFrame.setLayout(null);
@@ -59,11 +59,6 @@ public class Withdraw {
 
                         int confirmTransaction = JOptionPane.showConfirmDialog(null, "You are about to withdraw Ksh "+ getWithdrawAmount +"\n Do you wish to continue?","CONFIRM WITHDRAWAL", JOptionPane.YES_NO_OPTION);
                             if (confirmTransaction == JOptionPane.YES_OPTION){
-                                /*
-                                 INSERT CODE FOR WITHDRAWAL FUNCTION HERE
-                                 Code to insert: Updating database with the remaining balance after withdrawal
-                                 Code to remove: JOptionPane.showMessageDialog
-                                */
 
                                 try(BufferedReader wDrawReader = new BufferedReader(new FileReader("Accounts.txt"))){
                                     String fileLine;
@@ -76,6 +71,8 @@ public class Withdraw {
 
                                             addBalanceToDatabase((withdrawAccNumber.getText()), wDraw_AccBalance, (String.valueOf(remainingBalance)));
                                             withdrawBal.setText(String.valueOf(remainingBalance));
+                                            MainScreen.accBalance.setText(String.valueOf(remainingBalance));
+                                            withdrawAmountTxtFld.setText("");
 
                                             break;
                                         }
@@ -85,8 +82,6 @@ public class Withdraw {
                                     JOptionPane.showMessageDialog(null, "An Error occurred!", "ERROR", JOptionPane.ERROR_MESSAGE);
                                 }
 
-
-                               // JOptionPane.showMessageDialog(null, "Balance: "+withdrawBal_calculation+" Withdraw: "+getWithdrawAmount +" Balance: "+remainingBalance);
                             } else if(confirmTransaction == JOptionPane.NO_OPTION){
                                 JOptionPane.showMessageDialog(null, "You have canceled withdrawal of Ksh "+getWithdrawAmount);
                             }
@@ -102,7 +97,6 @@ public class Withdraw {
         backButton.setForeground(Color.white);
             backButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    new MainScreen();
                     withdrawFrame.dispose();
 
                 }
@@ -129,7 +123,7 @@ public class Withdraw {
 
     }
 
-    public void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
+    public static void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
         try {
             //Read the entire file into a string builder
             BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
@@ -156,7 +150,8 @@ public class Withdraw {
             writer.close();
 
             JOptionPane.showMessageDialog(null, "Withdrawal Successful");
-            withdrawAmountTxtFld.setText("");
+
+
 
         } catch (IOException ex){
             JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);

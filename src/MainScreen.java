@@ -29,7 +29,7 @@ public class MainScreen {
                         new Withdraw();
                         Withdraw.withdrawUpdateBalLabel(MainScreen.accBalance.getText());
                         Withdraw.withdrawUpdateAccNumber(MainScreen.accNumberLabel.getText());
-                        mainScreen.dispose();
+                        //mainScreen.dispose();
 
                     }
                 });
@@ -44,7 +44,7 @@ public class MainScreen {
                     public void actionPerformed(ActionEvent e){
                         new Donate();
                         Donate.donateUpdateBalLabel(MainScreen.accBalance.getText());
-                        mainScreen.dispose();
+                        Donate.donateUpdateAccNumber(MainScreen.accNumberLabel.getText());
 
                     }
                 });

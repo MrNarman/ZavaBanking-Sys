@@ -4,10 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Donate {
     JButton backButton;
     static JLabel donateBal;
+    static JLabel donateAccNumber;
     JTextField donateAmountTxtFld;
     JButton donateButton;
 
@@ -26,8 +30,14 @@ public class Donate {
         donateBal = new JLabel("000000");
         donateBal.setBounds(120, 20, 100, 30);
 
-        JLabel amount_to_withdrawLabel = new JLabel("Amount to Donate:");
-        amount_to_withdrawLabel.setBounds(20, 60, 150, 30);
+        JLabel amount_to_DonateLabel = new JLabel("Amount to Donate:");
+        amount_to_DonateLabel.setBounds(20, 60, 150, 30);
+
+        JLabel amount_to_donate = new JLabel("Acc Number: ");
+        amount_to_donate.setBounds(20, 150, 110, 25);
+
+        donateAccNumber = new JLabel("########");
+        donateAccNumber.setBounds(120, 150, 150, 25);
 
         donateAmountTxtFld = new JTextField();
         donateAmountTxtFld.setBounds(20, 100, 100, 30);
@@ -52,9 +62,33 @@ public class Donate {
                                     /*
                                      INSERT CODE FOR DONATION FUNCTION HERE
                                      Code to insert: Updating database with the remaining balance after donation
-                                     Code to remove: JOptionPane.showMessageDialog
+                                     Code to remove: JOptionPane.
+                                     
                                     */
-                            JOptionPane.showMessageDialog(null, "Balance: "+donateBal_calculation+" Withdraw: "+getDonateAmount +" Balance: "+remainingBalance);
+
+                            try(BufferedReader donateReader = new BufferedReader(new FileReader("Accounts.txt"))){
+                                String fileLine;
+
+                                while((fileLine = donateReader.readLine()) != null){
+                                    String[] parts = fileLine.split(" ");
+
+                                    if (parts.length >=4){
+                                        String donate_AccBalance = parts[3];
+
+                                        Withdraw.addBalanceToDatabase((donateAccNumber.getText()), donate_AccBalance, (String.valueOf(remainingBalance))); //
+                                        donateBal.setText(String.valueOf(remainingBalance));
+                                        MainScreen.accBalance.setText(String.valueOf(remainingBalance));
+                                        donateAmountTxtFld.setText("");
+
+                                        break;
+                                    }
+                                }
+
+                            } catch (IOException ex){
+                                JOptionPane.showMessageDialog(null, "An Error occurred!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            }
+
+
                         } else if(confirmDonation == JOptionPane.NO_OPTION){
                             JOptionPane.showMessageDialog(null, "You have canceled withdrawal of Ksh "+getDonateAmount);
                         }
@@ -70,7 +104,6 @@ public class Donate {
         backButton.setForeground(Color.white);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new MainScreen();
                 donateFrame.dispose();
 
             }
@@ -79,8 +112,10 @@ public class Donate {
         //Add components to frame
         donateFrame.add(balLabel);
         donateFrame.add(donateBal);
-        donateFrame.add(amount_to_withdrawLabel);
+        donateFrame.add(amount_to_DonateLabel);
         donateFrame.add(donateAmountTxtFld);
+        donateFrame.add(amount_to_donate);
+        donateFrame.add(donateAccNumber);
         donateFrame.add(donateButton);
         donateFrame.add(backButton);
     }
@@ -88,6 +123,10 @@ public class Donate {
     public static  void donateUpdateBalLabel(String donateAccLabel){
         donateBal.setText(donateAccLabel);
 
+    }
+
+    public static void donateUpdateAccNumber(String donationAccountNumber){
+        donateAccNumber.setText(donationAccountNumber);
     }
 
 }
