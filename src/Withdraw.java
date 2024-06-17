@@ -2,10 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.nio.Buffer;
 
 public class Withdraw {
     JButton backButton;
     static JLabel withdrawBal;
+    static JLabel withdrawAccNumber;
     JTextField withdrawAmountTxtFld;
     JButton withdrawButton;
 
@@ -27,6 +30,12 @@ public class Withdraw {
 
         JLabel amount_to_withdrawLabel = new JLabel("Amount to withdraw:");
         amount_to_withdrawLabel.setBounds(20, 60, 150, 30);
+
+        JLabel account_Number = new JLabel("Acc Number: ");
+        account_Number.setBounds(20, 150, 110, 25);
+
+        withdrawAccNumber = new JLabel("########");
+        withdrawAccNumber.setBounds(120, 150, 150, 25);
 
         withdrawAmountTxtFld = new JTextField();
         withdrawAmountTxtFld.setBounds(20, 100, 100, 25);
@@ -55,7 +64,29 @@ public class Withdraw {
                                  Code to insert: Updating database with the remaining balance after withdrawal
                                  Code to remove: JOptionPane.showMessageDialog
                                 */
-                                JOptionPane.showMessageDialog(null, "Balance: "+withdrawBal_calculation+" Withdraw: "+getWithdrawAmount +" Balance: "+remainingBalance);
+
+                                try(BufferedReader wDrawReader = new BufferedReader(new FileReader("Accounts.txt"))){
+                                    String fileLine;
+
+                                    while((fileLine = wDrawReader.readLine()) != null){
+                                        String[] parts = fileLine.split(" ");
+
+                                        if (parts.length >=4){
+                                            String wDraw_AccBalance = parts[3];
+
+                                            addBalanceToDatabase((withdrawAccNumber.getText()), wDraw_AccBalance, (String.valueOf(remainingBalance)));
+                                            withdrawBal.setText(String.valueOf(remainingBalance));
+
+                                            break;
+                                        }
+                                    }
+
+                                } catch (IOException ex){
+                                    JOptionPane.showMessageDialog(null, "An Error occurred!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                                }
+
+
+                               // JOptionPane.showMessageDialog(null, "Balance: "+withdrawBal_calculation+" Withdraw: "+getWithdrawAmount +" Balance: "+remainingBalance);
                             } else if(confirmTransaction == JOptionPane.NO_OPTION){
                                 JOptionPane.showMessageDialog(null, "You have canceled withdrawal of Ksh "+getWithdrawAmount);
                             }
@@ -82,13 +113,55 @@ public class Withdraw {
         withdrawFrame.add(balLabel);
         withdrawFrame.add(withdrawBal);
         withdrawFrame.add(amount_to_withdrawLabel);
+        withdrawFrame.add(account_Number);
+        withdrawFrame.add(withdrawAccNumber);
         withdrawFrame.add(withdrawAmountTxtFld);
         withdrawFrame.add(withdrawButton);
         withdrawFrame.add(backButton);
     }
 
-    public static  void withdrawUpdateBalLabel(String withdrawAccBalance){
+    public static  void withdrawUpdateBalLabel(String withdrawAccBalance){ //This method sets the value of the withdrawal frame balance
         withdrawBal.setText(withdrawAccBalance);
+    }
+
+    public static void withdrawUpdateAccNumber(String withdrawalAccountNumber){ //This method sets the account number of the user to the withdrawal frame
+        withdrawAccNumber.setText(withdrawalAccountNumber);
+
+    }
+
+    public void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
+        try {
+            //Read the entire file into a string builder
+            BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while((line = reader.readLine()) != null){
+                builder.append(line).append("\n");
+            }
+            reader.close();
+
+            //Replace the old word with the new word
+            oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
+
+            String content = builder.toString();
+            if ( withdrawAccNumber.getText() == account_Number){
+                content = content.replaceAll("\\b"+ oldAccBalance+ "\\b", newAccBalance);
+
+            }
+
+            //Write the updated content back to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Accounts.txt"));
+            writer.write(content);
+            writer.close();
+
+            JOptionPane.showMessageDialog(null, "Withdrawal Successful");
+            withdrawAmountTxtFld.setText("");
+
+        } catch (IOException ex){
+            JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 }

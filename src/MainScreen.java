@@ -28,12 +28,13 @@ public class MainScreen {
                     public void actionPerformed(ActionEvent e){
                         new Withdraw();
                         Withdraw.withdrawUpdateBalLabel(MainScreen.accBalance.getText());
+                        Withdraw.withdrawUpdateAccNumber(MainScreen.accNumberLabel.getText());
                         mainScreen.dispose();
 
                     }
                 });
-        JButton sendmoneyButton = new JButton("SEND MONEY");
-                sendmoneyButton.addActionListener(new ActionListener() {
+        JButton sendMoneyButton = new JButton("SEND MONEY");
+                sendMoneyButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
 
                     }
@@ -55,7 +56,7 @@ public class MainScreen {
                 });
 
         buttonPanel.add(withdrawButton);
-        buttonPanel.add(sendmoneyButton);
+        buttonPanel.add(sendMoneyButton);
         buttonPanel.add(donateButton);
         buttonPanel.add(settingsButton);
 
