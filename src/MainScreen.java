@@ -55,6 +55,7 @@ public class MainScreen {
                     public void actionPerformed(ActionEvent e){
                         new Settings();
                         Settings.updateAccLabel(MainScreen.accNumberLabel.getText());
+                        Settings.updatePinLabel(MainScreen.accNumberLabel.getText());
 
                     }
                 });

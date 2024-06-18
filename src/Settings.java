@@ -2,11 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class Settings {
     static JLabel settingsAccNumber;
-    JTextField newPinTxtField;
-    JLabel oldPin;
+    static JTextField newPinTxtField;
+    static JLabel oldPin;
     JButton backButton;
     JButton changePin;
 
@@ -42,6 +43,7 @@ public class Settings {
         changePin.setBounds(10, 210, 150, 30);
         changePin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                updatePinToDB((settingsAccNumber.getText()), (oldPin.getText()), (newPinTxtField.getText()));
 
             }
         });
@@ -69,6 +71,66 @@ public class Settings {
 
     public static void updateAccLabel(String getAccNumber){
         settingsAccNumber.setText(getAccNumber);
+    }
+
+    public static void updatePinLabel(String getAccNo_for_Pin){
+
+        try(BufferedReader settingsReader = new BufferedReader(new FileReader("Accounts.txt"))){
+            String fileLine;
+            while((fileLine = settingsReader.readLine()) != null){
+                String[] parts = fileLine.split(" ");
+
+                if (parts.length >= 4){
+                    String settingsAccNumber = parts[2];
+                    String settingsPin = parts[4];
+
+                    if (settingsAccNumber.equals(getAccNo_for_Pin)){
+                        oldPin.setText(String.valueOf(parts[4]));
+
+                        break;
+                    }
+
+                }
+            }
+
+        }catch (IOException ex){
+            JOptionPane.showMessageDialog(null, "A Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }
+
+    public  static void updatePinToDB(String account_number, String old_Pin, String newPin){
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while((line = reader.readLine()) != null){
+                builder.append(line).append("\n");
+            }
+            reader.close();
+
+            //Replace old pin with new pin
+            old_Pin = oldPin.getText(); //Pin displayed on the screen
+
+            String content = builder.toString();
+            if (settingsAccNumber.getText().equals(account_number)){
+                content = content.replaceAll("\\b"+ old_Pin+ "\\b", newPin);
+            }
+
+            //write the updated content back to file
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Accounts.txt"));
+            writer.write(content);
+            writer.close();
+
+            JOptionPane.showMessageDialog(null, "PIN successfully changed for Acc: "+ settingsAccNumber.getText());
+            newPinTxtField.setText("");
+
+        }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
     
 }
