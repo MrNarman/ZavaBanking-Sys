@@ -36,6 +36,8 @@ public class MainScreen {
         JButton sendMoneyButton = new JButton("SEND MONEY");
                 sendMoneyButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
+                        new SendMoney();
+                        SendMoney.updateAccLabel(MainScreen.accNumberLabel.getText());
 
                     }
                 });
@@ -51,6 +53,8 @@ public class MainScreen {
         JButton settingsButton = new JButton("SETTINGS");
                 settingsButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
+                        new Settings();
+                        Settings.updateAccLabel(MainScreen.accNumberLabel.getText());
 
                     }
                 });
