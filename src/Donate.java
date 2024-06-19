@@ -4,9 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Donate {
     JButton backButton;
@@ -57,7 +55,7 @@ public class Donate {
                     int amountUserToDonate = Integer.parseInt(getDonateAmount);
                     int remainingBalance = (donateBal_calculation) - (amountUserToDonate);
 
-                    int confirmDonation = JOptionPane.showConfirmDialog(null, "You are about to donate Ksh "+ getDonateAmount +"\n Do you wish to continue?","CONFIRM WITHDRAWAL", JOptionPane.YES_NO_OPTION);
+                    int confirmDonation = JOptionPane.showConfirmDialog(null, "You are about to donate Ksh "+ getDonateAmount +"\n Do you wish to continue?","CONFIRM DONATION", JOptionPane.YES_NO_OPTION);
                         if (confirmDonation == JOptionPane.YES_OPTION){
                                     /*
                                      INSERT CODE FOR DONATION FUNCTION HERE
@@ -90,7 +88,7 @@ public class Donate {
 
 
                         } else if(confirmDonation == JOptionPane.NO_OPTION){
-                            JOptionPane.showMessageDialog(null, "You have canceled withdrawal of Ksh "+getDonateAmount);
+                            JOptionPane.showMessageDialog(null, "You have canceled donation of Ksh "+getDonateAmount);
                         }
 
                 }
@@ -127,6 +125,42 @@ public class Donate {
 
     public static void donateUpdateAccNumber(String donationAccountNumber){
         donateAccNumber.setText(donationAccountNumber);
+    }
+
+    public static void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
+        try {
+            //Read the entire file into a string builder
+            BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while((line = reader.readLine()) != null){
+                builder.append(line).append("\n");
+            }
+            reader.close();
+
+            //Replace the old word with the new word
+            //oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
+            // withdrawAccNumber.getText() == account_Number
+            String content = builder.toString();
+            if (account_Number.equals(donateAccNumber.getText())){
+                content = content.replaceAll("\\b"+ oldAccBalance+ "\\b", newAccBalance);
+
+            }
+
+            //Write the updated content back to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Accounts.txt"));
+            writer.write(content);
+            writer.close();
+
+            JOptionPane.showMessageDialog(null, "Donation Successful");
+
+
+
+        } catch (IOException ex){
+            JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 }

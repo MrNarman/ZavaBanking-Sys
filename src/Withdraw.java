@@ -136,10 +136,11 @@ public class Withdraw {
             reader.close();
 
             //Replace the old word with the new word
-            oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
-
+            //oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
+            // withdrawAccNumber.getText() == account_Number
+            //account_Number.equals(withdrawAccNumber.getText())
             String content = builder.toString();
-            if ( withdrawAccNumber.getText() == account_Number){
+            if (withdrawAccNumber.getText() == account_Number){
                 content = content.replaceAll("\\b"+ oldAccBalance+ "\\b", newAccBalance);
 
             }

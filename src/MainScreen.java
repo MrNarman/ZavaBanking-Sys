@@ -38,6 +38,7 @@ public class MainScreen {
                     public void actionPerformed(ActionEvent e){
                         new SendMoney();
                         SendMoney.updateAccLabel(MainScreen.accNumberLabel.getText());
+                        SendMoney.updateBalLabel(MainScreen.accBalance.getText());
 
                     }
                 });
