@@ -29,7 +29,6 @@ public class MainScreen {
                         new Withdraw();
                         Withdraw.withdrawUpdateBalLabel(MainScreen.accBalance.getText());
                         Withdraw.withdrawUpdateAccNumber(MainScreen.accNumberLabel.getText());
-                        //mainScreen.dispose();
 
                     }
                 });

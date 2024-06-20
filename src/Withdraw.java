@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.Buffer;
 
 public class Withdraw {
     JButton backButton;
@@ -105,7 +104,6 @@ public class Withdraw {
                 }
             });
 
-
         //Add components to frame
         withdrawFrame.add(balLabel);
         withdrawFrame.add(withdrawBal);
@@ -151,12 +149,8 @@ public class Withdraw {
 
             JOptionPane.showMessageDialog(null, "Withdrawal Successful");
 
-
-
         } catch (IOException ex){
             JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-
     }
-
 }

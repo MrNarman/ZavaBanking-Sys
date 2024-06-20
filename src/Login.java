@@ -34,10 +34,6 @@ public class Login {
                    String userAccNumber = accNoTxtField.getText();
                    String userPinNumber = pinTxtField.getText();
 
-                   /* updateLabelText updates the full name and account number on the mainScreen
-                   * update balance label updates balance from corresponding account number
-                   * balance is stored in a hashMap as an integer with the account number as its key*/
-
                    try(BufferedReader loginReader = new BufferedReader(new FileReader("Accounts.txt"))){
                       String fileLine;
                       boolean accountFound = false;
@@ -115,7 +111,6 @@ public class Login {
     //Adding components to main Panel
        mainPanel.add(new JLabel()); //for spacing
        mainPanel.add(new JLabel()); //for spacing
-       //mainPanel.add(new JLabel()); //for spacing
 
     mainPanel.add(new JLabel("Account Number:"));
     mainPanel.add(accNoTxtField);
@@ -133,7 +128,5 @@ public class Login {
    
     //Adding components to Frame
     loginFrame.add(mainPanel, BorderLayout.CENTER);
-
    }
-
 }

@@ -3,11 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.Buffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class SendMoney {
     static JLabel sendMoneyBal;
@@ -91,17 +86,10 @@ public class SendMoney {
                                 JOptionPane.showMessageDialog(null, "An Error occurred!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             }
 
-
-
-
                         } else if (confirmTransfer == JOptionPane.NO_OPTION) {
                             JOptionPane.showMessageDialog(null, "You have canceled transfer of Ksh "+ (amountTxtField.getText()));
                         }
                 }
-
-
-                //Validate if recipient exists
-                //update database with balances
 
             }
         });
@@ -163,10 +151,7 @@ public class SendMoney {
             writer.write(content);
             writer.close();
 
-            //Probable place for the update recipient
-
             JOptionPane.showMessageDialog(null, "Transfer Successful");
-
 
         } catch(IOException ex){
             JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -213,10 +198,7 @@ public class SendMoney {
             JOptionPane.showMessageDialog(null, "An Error Occurred");
         }
 
-
-
     }
-
 }
 
 
