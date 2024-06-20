@@ -5,5 +5,7 @@ public class App {
         SwingUtilities.invokeLater(() -> {
             Login login = new Login();
         }); //Ensures all components are displayed
+
+        //Fix bug to the donate and withdraw frames to add values to the database
     }
 }

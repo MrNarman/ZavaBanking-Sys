@@ -83,7 +83,8 @@ public class MainScreen {
         exitButton.setBounds(100, 400, 70, 30);
                 exitButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e){
-
+                        new Login();
+                        mainScreen.dispose();
                     }
                 });
 

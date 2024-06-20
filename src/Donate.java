@@ -57,35 +57,11 @@ public class Donate {
 
                     int confirmDonation = JOptionPane.showConfirmDialog(null, "You are about to donate Ksh "+ getDonateAmount +"\n Do you wish to continue?","CONFIRM DONATION", JOptionPane.YES_NO_OPTION);
                         if (confirmDonation == JOptionPane.YES_OPTION){
-                                    /*
-                                     INSERT CODE FOR DONATION FUNCTION HERE
-                                     Code to insert: Updating database with the remaining balance after donation
-                                     Code to remove: JOptionPane.
-                                     
-                                    */
 
-                            try(BufferedReader donateReader = new BufferedReader(new FileReader("Accounts.txt"))){
-                                String fileLine;
-
-                                while((fileLine = donateReader.readLine()) != null){
-                                    String[] parts = fileLine.split(" ");
-
-                                    if (parts.length >=4){
-                                        String donate_AccBalance = parts[3];
-
-                                        Withdraw.addBalanceToDatabase((donateAccNumber.getText()), donate_AccBalance, (String.valueOf(remainingBalance))); //
-                                        donateBal.setText(String.valueOf(remainingBalance));
-                                        MainScreen.accBalance.setText(String.valueOf(remainingBalance));
-                                        donateAmountTxtFld.setText("");
-
-                                        break;
-                                    }
-                                }
-
-                            } catch (IOException ex){
-                                JOptionPane.showMessageDialog(null, "An Error occurred!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                            }
-
+                            add_Balance_To_Database((donateAccNumber.getText()), donateAmountTxtFld.getText());
+                            donateBal.setText(String.valueOf(remainingBalance));
+                            MainScreen.accBalance.setText(String.valueOf(remainingBalance));
+                            donateAmountTxtFld.setText("");
 
                         } else if(confirmDonation == JOptionPane.NO_OPTION){
                             JOptionPane.showMessageDialog(null, "You have canceled donation of Ksh "+getDonateAmount);
@@ -127,38 +103,43 @@ public class Donate {
         donateAccNumber.setText(donationAccountNumber);
     }
 
-    public static void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
+    public static void add_Balance_To_Database(String account_number, String amount_to_deduct){
+        //Open the input file Account.txt and a temporary file
+        File inputFile = new File("Accounts.txt");
+
         try {
-            //Read the entire file into a string builder
-            BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
-            StringBuilder builder = new StringBuilder();
+            File tempFile = new File("tempFile.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
             String line;
-
             while((line = reader.readLine()) != null){
-                builder.append(line).append("\n");
+                String[] data = line.split(" ");
+
+                if (data.length>=4 && data[2].equals(account_number)){
+                   int current_balance = Integer.parseInt(data[3]);
+                   int new_balance = current_balance - (Integer.parseInt(amount_to_deduct));
+                   data[3] = String.valueOf(new_balance);
+
+                   //update the line with the new balance
+                    line = String.join(" ", data);
+                }
+                writer.write(line + System.getProperty("line.separator"));
             }
+
             reader.close();
-
-            //Replace the old word with the new word
-            //oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
-            // withdrawAccNumber.getText() == account_Number
-            String content = builder.toString();
-            if (account_Number.equals(donateAccNumber.getText())){
-                content = content.replaceAll("\\b"+ oldAccBalance+ "\\b", newAccBalance);
-
-            }
-
-            //Write the updated content back to the file
-            BufferedWriter writer = new BufferedWriter(new FileWriter("Accounts.txt"));
-            writer.write(content);
             writer.close();
 
-            JOptionPane.showMessageDialog(null, "Donation Successful");
+            //Replace the original file with the updated file
+            if (inputFile.delete()){
+                tempFile.renameTo(inputFile);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error updating account balance");
+            }
 
-
-
-        } catch (IOException ex){
-            JOptionPane.showMessageDialog(null, "An Error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }catch (IOException ex){
+            JOptionPane.showMessageDialog(null, "An Error Occurred");
         }
 
     }

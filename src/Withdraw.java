@@ -60,6 +60,8 @@ public class Withdraw {
                         int confirmTransaction = JOptionPane.showConfirmDialog(null, "You are about to withdraw Ksh "+ getWithdrawAmount +"\n Do you wish to continue?","CONFIRM WITHDRAWAL", JOptionPane.YES_NO_OPTION);
                             if (confirmTransaction == JOptionPane.YES_OPTION){
 
+                                Donate.add_Balance_To_Database((withdrawAccNumber.getText()), withdrawAmountTxtFld.getText());
+
                                 try(BufferedReader wDrawReader = new BufferedReader(new FileReader("Accounts.txt"))){
                                     String fileLine;
 
@@ -67,9 +69,10 @@ public class Withdraw {
                                         String[] parts = fileLine.split(" ");
 
                                         if (parts.length >=4){
+                                            String wDraw_AccNumber = parts[2];
                                             String wDraw_AccBalance = parts[3];
 
-                                            addBalanceToDatabase((withdrawAccNumber.getText()), wDraw_AccBalance, (String.valueOf(remainingBalance)));
+                                            addBalanceToDatabase((withdrawAccNumber.getText()), wDraw_AccNumber, wDraw_AccBalance, (String.valueOf(remainingBalance)));
                                             withdrawBal.setText(String.valueOf(remainingBalance));
                                             MainScreen.accBalance.setText(String.valueOf(remainingBalance));
                                             withdrawAmountTxtFld.setText("");
@@ -123,7 +126,7 @@ public class Withdraw {
 
     }
 
-    public static void addBalanceToDatabase(String account_Number ,String oldAccBalance, String newAccBalance){
+    public static void addBalanceToDatabase(String account_Number,String partsAccNumber ,String oldAccBalance, String newAccBalance){
         try {
             //Read the entire file into a string builder
             BufferedReader reader = new BufferedReader(new FileReader("Accounts.txt"));
@@ -135,12 +138,8 @@ public class Withdraw {
             }
             reader.close();
 
-            //Replace the old word with the new word
-            //oldAccBalance = withdrawBal.getText(); //Balance currently showing on the frame
-            // withdrawAccNumber.getText() == account_Number
-            //account_Number.equals(withdrawAccNumber.getText())
             String content = builder.toString();
-            if (withdrawAccNumber.getText() == account_Number){
+            if (account_Number.equals(partsAccNumber)){
                 content = content.replaceAll("\\b"+ oldAccBalance+ "\\b", newAccBalance);
 
             }
