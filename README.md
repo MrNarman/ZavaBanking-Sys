@@ -2,6 +2,11 @@
 >Zava Banking system is GUI application developed as a process of learning GUI development using java.
 > It handles basic banking operations such as withdrawal, deposit, transfer of funds and account settings.
 > Users are required to log in with their account details (account number, pin) in order to access their accounts.
+> The login frame gets the users details and verifies the information with that in the `Accounts.txt`.
+> Valid information results in a successful login and the account's name, account number and bank balance is displayed on the main screen.
+> From the main screen, various buttons lead to various functions. Each action results to a realtime update on the database file, `Account.txt`. Deductions and additions made are updated instantly and on next login, they are visible.
+> 
+> DO NOT DELETE the `Accounts.txt` file. If you clear the contents, you can set new ones as an admin.
 
 > ## Additional Information
 > To Access the admin page, Password is set to `admin@ZavaBank`.
